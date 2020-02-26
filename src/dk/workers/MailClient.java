@@ -1,4 +1,5 @@
 package dk.workers;
+import javax.swing.*;
 import java.io.*;
 import java.net.*;
 import java.awt.*;
@@ -26,6 +27,7 @@ public class MailClient extends Frame {
     private TextField subjectField = new TextField("", 40);
     private Label messageLabel = new Label("Message:");
     private TextArea messageText = new TextArea(10, 40);
+
 
     /**
      * Create a new MailClient window with fields for entering all
