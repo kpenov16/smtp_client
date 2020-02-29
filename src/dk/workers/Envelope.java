@@ -73,6 +73,8 @@ public class Envelope {
         res += "Recipient: " + Recipient + '\n';
         res += "MX-host: " + DestHost + ", address: " + DestAddr + '\n';
         res += "Message:" + '\n';
+
+
         res += Message.toString();
 
         return res;

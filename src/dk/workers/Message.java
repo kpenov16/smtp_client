@@ -81,7 +81,22 @@ public class Message {
         String res;
 
         res = Headers + CRLF;
+
+        //new
+        res += "MIME-Version: 1.0" + CRLF;
+        res += "Content-Type: multipart/mixed; boundary=\"outer-boundary\"" + CRLF;
+
+        res += "--outer-boundary" + CRLF;
+        res += "Content-Type: text/plain; charset=us-ascii" + CRLF;
         res += Body;
+        res += "--outer-boundary" + CRLF;
+        res += "Content-Type: image/gif" + CRLF;
+        res += "Content-Disposition: inline" + CRLF;
+        res += "Content-Transfer-Encoding: base64" + CRLF;
+        res += "Content-ID: <frown@here>" + CRLF;
+        res += "R0lGODlhEAAQAKEBAAAAAAD//wD//wD//yH5BAEKAAIALAAAAAAQABAAAAIzlA2px6IBw2" +
+                "IpWglOvTahDgGdI0ZlGW5meKlci75drDzm5uLZyZ1I3Mv8ZB5Krtgg1RoFADs=" + CRLF;
+        res += "--outer-boundary--" + CRLF;
         return res;
     }
 }

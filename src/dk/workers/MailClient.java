@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Base64;
 
 /* $Id: MailClient.java,v 1.7 1999/07/22 12:07:30 kangasha Exp $ */
 
@@ -15,6 +16,7 @@ import java.awt.event.*;
 public class MailClient extends Frame {
     /* The stuff for the GUI. */
     private Button btSend = new Button("Send");
+    private Button btAdd = new Button("Add");
     private Button btClear = new Button("Clear");
     private Button btQuit = new Button("Quit");
     private Label serverLabel = new Label("Local mailserver:");
@@ -27,6 +29,8 @@ public class MailClient extends Frame {
     private TextField subjectField = new TextField("", 40);
     private Label messageLabel = new Label("Message:");
     private TextArea messageText = new TextArea(10, 40);
+
+
 
 
     /**
@@ -63,9 +67,11 @@ public class MailClient extends Frame {
 	   buttons. */
         Panel buttonPanel = new Panel(new GridLayout(1, 0));
         btSend.addActionListener(new SendListener());
+        btAdd.addActionListener(new AddListener());
         btClear.addActionListener(new ClearListener());
         btQuit.addActionListener(new QuitListener());
         buttonPanel.add(btSend);
+        buttonPanel.add(btAdd);
         buttonPanel.add(btClear);
         buttonPanel.add(btQuit);
 
@@ -79,6 +85,39 @@ public class MailClient extends Frame {
 
     static public void main(String argv[]) {
         new MailClient();
+    }
+    //Create a file chooser
+    final JFileChooser fc = new JFileChooser();
+
+    /* Handler for the Send-button. */
+    class AddListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            //Handle open button action.
+            if (e.getSource() == btAdd) {
+            //if (true) {
+                int returnVal = fc.showOpenDialog(MailClient.this);
+
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File file = fc.getSelectedFile();
+                    //This is where a real application would open the file.
+                    System.out.println("Opening: " + file.getName());
+                    String base64File = "";
+                    try (FileInputStream imageInFile = new FileInputStream(file)) {
+                        // Reading a file from file system
+                        byte fileData[] = new byte[(int) file.length()];
+                        imageInFile.read(fileData);
+                        base64File = Base64.getEncoder().encodeToString(fileData);
+                    } catch (FileNotFoundException ex) {
+                        System.out.println("File not found" + ex);
+                    } catch (IOException ioe) {
+                        System.out.println("Exception while reading the file " + ioe);
+                    }
+                } else {
+                    System.out.println("Open command cancelled by user.");
+                }
+            }
+        }
     }
 
     /* Handler for the Send-button. */
