@@ -39,7 +39,26 @@ public class Message {
                 new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss 'GMT'");
         String dateString = format.format(new Date());
         Headers += "Date: " + dateString + CRLF;
-        Body = text;
+
+        //new
+        Headers += "MIME-Version: 1.0" + CRLF;
+        Headers += "Content-Type: multipart/mixed; boundary=outerboundary" + CRLF;
+
+        Headers += "--outerboundary" + CRLF;
+        Headers += "Content-Type: text/plain; charset=us-ascii" + CRLF;
+        Headers += "Some text for body" + CRLF;
+        Headers += "--outerboundary" + CRLF;
+        Headers += "Content-Type: image/gif" + CRLF;
+        Headers += "Content-Disposition: inline" + CRLF;
+        Headers += "Content-Transfer-Encoding: base64" + CRLF;
+        Headers += "Content-ID: frown@here.ko" + CRLF;
+        Headers += "R0lGODlhEAAQAKEBAAAAAAD//wD//wD//yH5BAEKAAIALAAAAAAQABAAAAIzlA2px6IBw2IpWglOvTahDgGdI0ZlGW5meKlci75drDzm5uLZyZ1I3Mv8ZB5Krtgg1RoFADs=" + CRLF;
+        Headers += "--outerboundary--" + CRLF;
+
+
+
+
+        //Body = text;
     }
 
     /* Two functions to access the sender and recipient. */
@@ -80,8 +99,9 @@ public class Message {
     public String toString() {
         String res;
 
-        res = Headers + CRLF;
-
+        //res = Headers + CRLF;
+        //res += Body;
+        /*
         //new
         res += "MIME-Version: 1.0" + CRLF;
         res += "Content-Type: multipart/mixed; boundary=\"outer-boundary\"" + CRLF;
@@ -97,6 +117,8 @@ public class Message {
         res += "R0lGODlhEAAQAKEBAAAAAAD//wD//wD//yH5BAEKAAIALAAAAAAQABAAAAIzlA2px6IBw2" +
                 "IpWglOvTahDgGdI0ZlGW5meKlci75drDzm5uLZyZ1I3Mv8ZB5Krtgg1RoFADs=" + CRLF;
         res += CRLF +"--outer-boundary--" + CRLF;
+        */
+        res = Headers;
         return res;
     }
 }
