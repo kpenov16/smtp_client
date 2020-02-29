@@ -46,13 +46,14 @@ public class Message {
 
         Headers += CRLF + "--outerboundary" + CRLF;
         Headers += "Content-Type: text/plain; charset=us-ascii" + CRLF;
-        Headers += CRLF + "Some text for body" + CRLF;
+        //Headers += CRLF + "Some text for body" + CRLF;
+        Headers += CRLF + text + CRLF;
         Headers += CRLF + "--outerboundary" + CRLF;
         Headers += "Content-Type: image/gif" + CRLF;
         Headers += "Content-Disposition: inline" + CRLF;
         Headers += "Content-Transfer-Encoding: base64" + CRLF;
         Headers += "Content-ID: frown@here.ko" + CRLF;
-        Headers += CRLF + "R0lGODlhEAAQAKEBAAAAAAD//wD//wD//yH5BAEKAAIALAAAAAAQABAAAAIzlA2px6IBw2IpWglOvTahDgGdI0ZlGW5meKlci75drDzm5uLZyZ1I3Mv8ZB5Krtgg1RoFADs=" + CRLF;
+        Headers += CRLF + "R0lGODlhEAAQAKEBAAAAAP//AP//AP//ACH5BAEKAAIALAAAAAAQABAAAAIzlA2px6IBw2IpWglOvTahDgGdI0ZlGW5meKlci6JrasrqkypxJr8S0oNpgqkGLtcY6hoFADs=" + CRLF;
         Headers += CRLF +"--outerboundary--" + CRLF;
 
 
