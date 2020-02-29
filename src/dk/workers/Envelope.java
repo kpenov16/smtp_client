@@ -34,7 +34,8 @@ public class Envelope {
 	/* Get message. We must escape the message to make sure that
 	   there are no single periods on a line. This would mess up
 	   sending the mail. */
-        Message = escapeMessage(message);
+        //kpv, hardcode for now
+	    //Message = escapeMessage(message);
 
         /* Take the name of the local mailserver and map it into an
          * InetAddress */
