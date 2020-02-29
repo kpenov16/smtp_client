@@ -44,16 +44,16 @@ public class Message {
         Headers += "MIME-Version: 1.0" + CRLF;
         Headers += "Content-Type: multipart/mixed; boundary=outerboundary" + CRLF;
 
-        Headers += "--outerboundary" + CRLF;
+        Headers += CRLF + "--outerboundary" + CRLF;
         Headers += "Content-Type: text/plain; charset=us-ascii" + CRLF;
-        Headers += "Some text for body" + CRLF;
-        Headers += "--outerboundary" + CRLF;
+        Headers += CRLF + "Some text for body" + CRLF;
+        Headers += CRLF + "--outerboundary" + CRLF;
         Headers += "Content-Type: image/gif" + CRLF;
         Headers += "Content-Disposition: inline" + CRLF;
         Headers += "Content-Transfer-Encoding: base64" + CRLF;
         Headers += "Content-ID: frown@here.ko" + CRLF;
-        Headers += "R0lGODlhEAAQAKEBAAAAAAD//wD//wD//yH5BAEKAAIALAAAAAAQABAAAAIzlA2px6IBw2IpWglOvTahDgGdI0ZlGW5meKlci75drDzm5uLZyZ1I3Mv8ZB5Krtgg1RoFADs=" + CRLF;
-        Headers += "--outerboundary--" + CRLF;
+        Headers += CRLF + "R0lGODlhEAAQAKEBAAAAAAD//wD//wD//yH5BAEKAAIALAAAAAAQABAAAAIzlA2px6IBw2IpWglOvTahDgGdI0ZlGW5meKlci75drDzm5uLZyZ1I3Mv8ZB5Krtgg1RoFADs=" + CRLF;
+        Headers += CRLF +"--outerboundary--" + CRLF;
 
 
 
