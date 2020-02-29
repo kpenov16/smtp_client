@@ -30,7 +30,7 @@ public class MailClient extends Frame {
     private Label messageLabel = new Label("Message:");
     private TextArea messageText = new TextArea(10, 40);
 
-
+    private String base64File = "";
 
 
     /**
@@ -89,7 +89,7 @@ public class MailClient extends Frame {
     //Create a file chooser
     final JFileChooser fc = new JFileChooser();
 
-    /* Handler for the Send-button. */
+    /* Handler for the Add-button. */
     class AddListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -108,6 +108,8 @@ public class MailClient extends Frame {
                         byte fileData[] = new byte[(int) file.length()];
                         imageInFile.read(fileData);
                         base64File = Base64.getEncoder().encodeToString(fileData);
+
+                        attachFile(base64File);
                     } catch (FileNotFoundException ex) {
                         System.out.println("File not found" + ex);
                     } catch (IOException ioe) {
@@ -118,6 +120,10 @@ public class MailClient extends Frame {
                 }
             }
         }
+    }
+
+    public synchronized void attachFile(String base64File){
+        this.base64File = base64File;
     }
 
     /* Handler for the Send-button. */
@@ -145,7 +151,8 @@ public class MailClient extends Frame {
             Message mailMessage = new Message(fromField.getText(),
                     toField.getText(),
                     subjectField.getText(),
-                    messageText.getText());
+                    messageText.getText(),
+                    base64File);
 
 	    /* Check that the message is valid, i.e., sender and
 	       recipient addresses look ok. */

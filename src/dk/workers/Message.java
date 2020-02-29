@@ -25,7 +25,7 @@ public class Message {
 
     /* Create the message object by inserting the required headers from
        RFC 822 (From, To, Date). */
-    public Message(String from, String to, String subject, String text) {
+    public Message(String from, String to, String subject, String text, String base64File) {
         /* Remove whitespace */
         From = from.trim();
         To = to.trim();
@@ -53,7 +53,8 @@ public class Message {
         Headers += "Content-Disposition: inline" + CRLF;
         Headers += "Content-Transfer-Encoding: base64" + CRLF;
         Headers += "Content-ID: frown@here.ko" + CRLF;
-        Headers += CRLF + "R0lGODlhEAAQAKEBAAAAAP//AP//AP//ACH5BAEKAAIALAAAAAAQABAAAAIzlA2px6IBw2IpWglOvTahDgGdI0ZlGW5meKlci6JrasrqkypxJr8S0oNpgqkGLtcY6hoFADs=" + CRLF;
+        //Headers += CRLF + "R0lGODlhEAAQAKEBAAAAAP//AP//AP//ACH5BAEKAAIALAAAAAAQABAAAAIzlA2px6IBw2IpWglOvTahDgGdI0ZlGW5meKlci6JrasrqkypxJr8S0oNpgqkGLtcY6hoFADs=" + CRLF;
+        Headers += CRLF + base64File + CRLF;
         Headers += CRLF +"--outerboundary--" + CRLF;
 
 
