@@ -64,7 +64,7 @@ public class Envelope {
             escapedBody += token;
         }
         message.Body = escapedBody;
-        return message;
+        return message; 
     }
 
     /* For printing the envelope. Only for debug. */
