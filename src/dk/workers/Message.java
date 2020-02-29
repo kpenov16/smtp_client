@@ -57,7 +57,7 @@ public class Message {
 
 
 
-
+        Body = "";
         //Body = text;
     }
 
