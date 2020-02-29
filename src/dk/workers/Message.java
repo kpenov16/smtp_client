@@ -49,7 +49,7 @@ public class Message {
         //Headers += CRLF + "Some text for body" + CRLF;
         Headers += CRLF + text + CRLF;
         Headers += CRLF + "--outerboundary" + CRLF;
-        Headers += "Content-Type: image/gif" + CRLF;
+        Headers += "Content-Type: image/jpeg" + CRLF;
         Headers += "Content-Disposition: inline" + CRLF;
         Headers += "Content-Transfer-Encoding: base64" + CRLF;
         Headers += "Content-ID: frown@here.ko" + CRLF;
