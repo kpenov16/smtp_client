@@ -95,7 +95,6 @@ public class MailClient extends Frame {
         public void actionPerformed(ActionEvent e) {
             //Handle open button action.
             if (e.getSource() == btAdd) {
-            //if (true) {
                 int returnVal = fc.showOpenDialog(MailClient.this);
 
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -190,6 +189,7 @@ public class MailClient extends Frame {
             toField.setText("");
             subjectField.setText("");
             messageText.setText("");
+            base64File = "";
         }
     }
 

@@ -48,13 +48,15 @@ public class Message {
         Headers += "Content-Type: text/plain; charset=us-ascii" + CRLF;
         //Headers += CRLF + "Some text for body" + CRLF;
         Headers += CRLF + text + CRLF;
-        Headers += CRLF + "--outerboundary" + CRLF;
-        Headers += "Content-Type: image/jpeg" + CRLF;
-        Headers += "Content-Disposition: inline" + CRLF;
-        Headers += "Content-Transfer-Encoding: base64" + CRLF;
-        Headers += "Content-ID: frown@here.ko" + CRLF;
-        //Headers += CRLF + "R0lGODlhEAAQAKEBAAAAAP//AP//AP//ACH5BAEKAAIALAAAAAAQABAAAAIzlA2px6IBw2IpWglOvTahDgGdI0ZlGW5meKlci6JrasrqkypxJr8S0oNpgqkGLtcY6hoFADs=" + CRLF;
-        Headers += CRLF + base64File + CRLF;
+        if(base64File != null && !base64File.isEmpty()){
+            Headers += CRLF + "--outerboundary" + CRLF;
+            Headers += "Content-Type: image/jpeg" + CRLF;
+            Headers += "Content-Disposition: inline" + CRLF;
+            Headers += "Content-Transfer-Encoding: base64" + CRLF;
+            Headers += "Content-ID: frown@here.ko" + CRLF;
+            //Headers += CRLF + "R0lGODlhEAAQAKEBAAAAAP//AP//AP//ACH5BAEKAAIALAAAAAAQABAAAAIzlA2px6IBw2IpWglOvTahDgGdI0ZlGW5meKlci6JrasrqkypxJr8S0oNpgqkGLtcY6hoFADs=" + CRLF;
+            Headers += CRLF + base64File + CRLF;
+        }
         Headers += CRLF +"--outerboundary--" + CRLF;
 
 
