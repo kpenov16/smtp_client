@@ -70,10 +70,10 @@ public class SMTPConnection {
   	/* Send all the necessary commands to send a message. Call
 	   sendCommand() to do the dirty work. Do _not_ catch the
 	   exception thrown from sendCommand(). */
-        sendCommand("MAIL FROM: " + envelope.Sender, 250);
-        sendCommand("RCPT TO: " + envelope.Recipient, 250);
-        sendCommand("DATA", 354);
-        sendCommand(envelope.Message.toString() + CRLF + "." + CRLF, 250);
+        sendCommand("MAIL FROM: " + envelope.Sender, 250);  // from email
+        sendCommand("RCPT TO: " + envelope.Recipient, 250); // to email
+        sendCommand("DATA", 354);                           // command indicating that the data body is coming next
+        sendCommand(envelope.Message.toString() + CRLF + "." + CRLF, 250); // the body itself with end of message sequence
     }
 
     /* Close the connection. First, terminate on SMTP level, then

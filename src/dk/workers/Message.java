@@ -25,7 +25,7 @@ public class Message {
 
     /* Create the message object by inserting the required headers from
        RFC 822 (From, To, Date). */
-    public Message(String from, String to, String subject, String text, List<String> base64Files) {
+    public Message(String from, String to, String subject, String text, List<ImageFile> imageFiles) {
         /* Remove whitespace */
         From = from.trim();
         To = to.trim();
@@ -57,26 +57,26 @@ public class Message {
         Headers += CRLF + text + CRLF; //the body of each part also starts and ends with CRLF
         int i = 1;
         //if we do not have attachments there is going to be only text body part from above
-        for(String base64File : base64Files){
+        for(ImageFile imageFile : imageFiles){
             //each attached image gets its own body part with headers describing the content
             //as we only support images as attachments the content type is image/jpeg
             Headers += CRLF + "--outerboundary" + CRLF; //signals start of a part, syntax is --boundaryName
                                                         //be aware that each part is starting with CRLF and then the boundary
             Headers += "Content-Type: image/jpeg" + CRLF; //the body type
             //Headers += "Content-Disposition: inline" + CRLF;
-            Headers += "Content-Disposition: attachment; filename=\"image"+ i++ +".jpg\"" + CRLF;
+            Headers += "Content-Disposition: attachment; filename=\""+imageFile.fileName+"\"" + CRLF; //the disposition of the following body part
             Headers += "Content-Transfer-Encoding: base64" + CRLF; //decoding to be used on the receiver side
-            Headers += "Content-ID: frown@here.ko" + CRLF;
+            Headers += "Content-ID: dont@care-for-now.com" + CRLF;
             //Headers += CRLF + "R0lGODlhEAAQAKEBAAAAAP//AP//AP//ACH5BAEKAAIALAAAAAAQABAAAAIzlA2px6IBw2IpWglOvTahDgGdI0ZlGW5meKlci6JrasrqkypxJr8S0oNpgqkGLtcY6hoFADs=" + CRLF;
-            Headers += CRLF + base64File + CRLF; //the body of each part also starts and ends with CRLF
+            Headers += CRLF + imageFile.base64File + CRLF; //the body of each part also starts and ends with CRLF
         }
 
         Headers += CRLF +"--outerboundary--" + CRLF; //signals end of a multipart body, syntax: --boundaryName--
 
+        //Kaloyan Penov: goodies used from here: https://stackoverflow.com/questions/30351465/html-email-with-inline-attachments-and-non-inline-attachments
+        //                                       https://stackoverflow.com/questions/10631856/mime-type-to-satisfy-html-email-images-and-plain-text
 
-
-        Body = "";
-        //Body = text;
+        Body = ""; //not used for now
     }
 
     /* Two functions to access the sender and recipient. */
@@ -115,28 +115,6 @@ public class Message {
 
     /* For printing the message. */
     public String toString() {
-        String res;
-
-        //res = Headers + CRLF;
-        //res += Body;
-        /*
-        //new
-        res += "MIME-Version: 1.0" + CRLF;
-        res += "Content-Type: multipart/mixed; boundary=\"outer-boundary\"" + CRLF;
-
-        res += CRLF + "--outer-boundary" + CRLF;
-        res += "Content-Type: text/plain; charset=us-ascii" + CRLF;
-        res += Body;
-        res += CRLF + "--outer-boundary" + CRLF;
-        res += "Content-Type: image/gif" + CRLF;
-        res += "Content-Disposition: inline" + CRLF;
-        res += "Content-Transfer-Encoding: base64" + CRLF;
-        res += "Content-ID: <frown@here>" + CRLF;
-        res += "R0lGODlhEAAQAKEBAAAAAAD//wD//wD//yH5BAEKAAIALAAAAAAQABAAAAIzlA2px6IBw2" +
-                "IpWglOvTahDgGdI0ZlGW5meKlci75drDzm5uLZyZ1I3Mv8ZB5Krtgg1RoFADs=" + CRLF;
-        res += CRLF +"--outer-boundary--" + CRLF;
-        */
-        res = Headers;
-        return res;
+        return Headers;
     }
 }

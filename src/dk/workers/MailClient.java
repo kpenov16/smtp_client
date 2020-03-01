@@ -17,7 +17,10 @@ import java.util.Base64;
 public class MailClient extends Frame {
     /* The stuff for the GUI. */
     private Button btSend = new Button("Send");
+
+    //Kaloyan Penov: adding a button for the file attachment
     private Button btAdd = new Button("Add");
+
     private Button btClear = new Button("Clear");
     private Button btQuit = new Button("Quit");
     private Label serverLabel = new Label("Local mailserver:");
@@ -31,8 +34,8 @@ public class MailClient extends Frame {
     private Label messageLabel = new Label("Message:");
     private TextArea messageText = new TextArea(10, 40);
 
-    private ArrayList<String> base64Files = new ArrayList<>();
-
+    //Kaloyan Penov: adding a list of ImageFiles to represent the files attached
+    private ArrayList<ImageFile> imageFiles = new ArrayList<>();
 
     /**
      * Create a new MailClient window with fields for entering all
@@ -68,7 +71,10 @@ public class MailClient extends Frame {
 	   buttons. */
         Panel buttonPanel = new Panel(new GridLayout(1, 0));
         btSend.addActionListener(new SendListener());
+
+        //Kaloyan Penov: adding a listener for the file attachment
         btAdd.addActionListener(new AddListener());
+
         btClear.addActionListener(new ClearListener());
         btQuit.addActionListener(new QuitListener());
         buttonPanel.add(btSend);
@@ -116,7 +122,7 @@ public class MailClient extends Frame {
                                                                                     //source: https://docs.oracle.com/javase/8/docs/api/java/util/Base64.html
                                                                                     //one long line string
                         //add file string to the shared array list with base64 encoded files
-                        attachFile(base64File);
+                        attachFile(base64File, file.getName());
                     } catch (FileNotFoundException ex) {
                         System.out.println("File not found" + ex);
                     } catch (IOException ioe) {
@@ -130,11 +136,11 @@ public class MailClient extends Frame {
     }
 
     //one thread at a time can access it
-    public synchronized void attachFile(String base64File){
-        this.base64Files.add(base64File);
+    public synchronized void attachFile(String base64File, String filename){
+        imageFiles.add( new ImageFile(base64File, filename) );
     }
     public synchronized void setupBase64Files(){
-        base64Files = new ArrayList<>();
+        imageFiles = new ArrayList<>();
     }
 
     /* Handler for the Send-button. */
@@ -163,7 +169,7 @@ public class MailClient extends Frame {
                     toField.getText(),
                     subjectField.getText(),
                     messageText.getText(),
-                    base64Files);
+                    imageFiles);//passing the image files to the message itself
 
 	    /* Check that the message is valid, i.e., sender and
 	       recipient addresses look ok. */
@@ -201,7 +207,7 @@ public class MailClient extends Frame {
             toField.setText("");
             subjectField.setText("");
             messageText.setText("");
-            setupBase64Files();
+            setupBase64Files(); //remove the attachments
         }
     }
 
