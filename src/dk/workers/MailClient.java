@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.Base64;
 
 /* $Id: MailClient.java,v 1.7 1999/07/22 12:07:30 kangasha Exp $ */
@@ -30,7 +31,7 @@ public class MailClient extends Frame {
     private Label messageLabel = new Label("Message:");
     private TextArea messageText = new TextArea(10, 40);
 
-    private String base64File = "";
+    private ArrayList<String> base64Files = new ArrayList<>();
 
 
     /**
@@ -122,7 +123,7 @@ public class MailClient extends Frame {
     }
 
     public synchronized void attachFile(String base64File){
-        this.base64File = base64File;
+        this.base64Files.add(base64File);
     }
 
     /* Handler for the Send-button. */
@@ -151,7 +152,7 @@ public class MailClient extends Frame {
                     toField.getText(),
                     subjectField.getText(),
                     messageText.getText(),
-                    base64File);
+                    base64Files);
 
 	    /* Check that the message is valid, i.e., sender and
 	       recipient addresses look ok. */
@@ -189,7 +190,7 @@ public class MailClient extends Frame {
             toField.setText("");
             subjectField.setText("");
             messageText.setText("");
-            base64File = "";
+            base64Files = new ArrayList<>();
         }
     }
 

@@ -25,7 +25,7 @@ public class Message {
 
     /* Create the message object by inserting the required headers from
        RFC 822 (From, To, Date). */
-    public Message(String from, String to, String subject, String text, String base64File) {
+    public Message(String from, String to, String subject, String text, List<String> base64Files) {
         /* Remove whitespace */
         From = from.trim();
         To = to.trim();
@@ -48,7 +48,7 @@ public class Message {
         Headers += "Content-Type: text/plain; charset=us-ascii" + CRLF;
         //Headers += CRLF + "Some text for body" + CRLF;
         Headers += CRLF + text + CRLF;
-        if(base64File != null && !base64File.isEmpty()){
+        for(String base64File : base64Files){
             Headers += CRLF + "--outerboundary" + CRLF;
             Headers += "Content-Type: image/jpeg" + CRLF;
             Headers += "Content-Disposition: inline" + CRLF;
