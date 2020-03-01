@@ -12,7 +12,7 @@ import java.util.Base64;
 /**
  * A simple mail client with a GUI for sending mail.
  *
- * @author Jussi Kangasharju
+ * @author Jussi Kangasharju, modified by Kaloyan Penov
  */
 public class MailClient extends Frame {
     /* The stuff for the GUI. */
@@ -87,28 +87,35 @@ public class MailClient extends Frame {
     static public void main(String argv[]) {
         new MailClient();
     }
+    // Kaloyan Penov, adding on click listener to open the image file
+    // and convert it to base64 encoded string that the smtp protocol works with
+    // when images are send via body parts in a mixed multipart content type
+    // as described in rfc 1521
     //Create a file chooser
     final JFileChooser fc = new JFileChooser();
-
     /* Handler for the Add-button. */
     class AddListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            // modified source: https://docs.oracle.com/javase/tutorial/uiswing/components/filechooser.html
             //Handle open button action.
             if (e.getSource() == btAdd) {
                 int returnVal = fc.showOpenDialog(MailClient.this);
 
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = fc.getSelectedFile();
-                    //This is where a real application would open the file.
+                    //show what file is being opened for debugging
                     System.out.println("Opening: " + file.getName());
                     String base64File = "";
                     try (FileInputStream imageInFile = new FileInputStream(file)) {
                         // Reading a file from file system
                         byte fileData[] = new byte[(int) file.length()];
-                        imageInFile.read(fileData);
-                        base64File = Base64.getEncoder().encodeToString(fileData);
-
+                        imageInFile.read(fileData); //read the bytes from the stream with the image file
+                                                    // and write them to the byte array
+                        base64File = Base64.getEncoder().encodeToString(fileData);  //encode the bytes to base64 string as specified in table 1 of rfc 4648 and 2045
+                                                                                    //source: https://docs.oracle.com/javase/8/docs/api/java/util/Base64.html
+                                                                                    //one long line string
+                        //add file string to the shared array list with base64 encoded files
                         attachFile(base64File);
                     } catch (FileNotFoundException ex) {
                         System.out.println("File not found" + ex);
@@ -122,8 +129,12 @@ public class MailClient extends Frame {
         }
     }
 
+    //one thread at a time can access it
     public synchronized void attachFile(String base64File){
         this.base64Files.add(base64File);
+    }
+    public synchronized void setupBase64Files(){
+        base64Files = new ArrayList<>();
     }
 
     /* Handler for the Send-button. */
@@ -190,9 +201,10 @@ public class MailClient extends Frame {
             toField.setText("");
             subjectField.setText("");
             messageText.setText("");
-            base64Files = new ArrayList<>();
+            setupBase64Files();
         }
     }
+
 
     /* Quit. */
     class QuitListener implements ActionListener {

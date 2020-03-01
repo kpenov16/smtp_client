@@ -40,24 +40,38 @@ public class Message {
         String dateString = format.format(new Date());
         Headers += "Date: " + dateString + CRLF;
 
-        //new
-        Headers += "MIME-Version: 1.0" + CRLF;
-        Headers += "Content-Type: multipart/mixed; boundary=outerboundary" + CRLF;
+        // Kaloyan Penov: we want to be able to send both text and images
+        // rfc 1521 redefines the format of the textual message body (rfc 822)
+        // to be used for multipart textual and non-textual bodies,
+        // that has been used here:
+        Headers += "MIME-Version: 1.0" + CRLF; //basically defines that we are using rfc 1521, and version
 
-        Headers += CRLF + "--outerboundary" + CRLF;
-        Headers += "Content-Type: text/plain; charset=us-ascii" + CRLF;
-        //Headers += CRLF + "Some text for body" + CRLF;
-        Headers += CRLF + text + CRLF;
+        //describes the data contained in the body and how to be understand on the receiving side
+        Headers += "Content-Type: multipart/mixed; boundary=outerboundary" + CRLF;
+                                                    //the boundary defines the different body parts
+
+        Headers += CRLF + "--outerboundary" + CRLF; //signals start of a part, syntax is --boundaryName
+                                                    //be aware that each part is starting with CRLF and then the boundary
+        Headers += "Content-Type: text/plain; charset=us-ascii" + CRLF; //the type and the character set in the body of that part
+        //Headers += CRLF + "Some text for body" + CRLF; //hardcoded example
+        Headers += CRLF + text + CRLF; //the body of each part also starts and ends with CRLF
+        int i = 1;
+        //if we do not have attachments there is going to be only text body part from above
         for(String base64File : base64Files){
-            Headers += CRLF + "--outerboundary" + CRLF;
-            Headers += "Content-Type: image/jpeg" + CRLF;
-            Headers += "Content-Disposition: inline" + CRLF;
-            Headers += "Content-Transfer-Encoding: base64" + CRLF;
+            //each attached image gets its own body part with headers describing the content
+            //as we only support images as attachments the content type is image/jpeg
+            Headers += CRLF + "--outerboundary" + CRLF; //signals start of a part, syntax is --boundaryName
+                                                        //be aware that each part is starting with CRLF and then the boundary
+            Headers += "Content-Type: image/jpeg" + CRLF; //the body type
+            //Headers += "Content-Disposition: inline" + CRLF;
+            Headers += "Content-Disposition: attachment; filename=\"image"+ i++ +".jpg\"" + CRLF;
+            Headers += "Content-Transfer-Encoding: base64" + CRLF; //decoding to be used on the receiver side
             Headers += "Content-ID: frown@here.ko" + CRLF;
             //Headers += CRLF + "R0lGODlhEAAQAKEBAAAAAP//AP//AP//ACH5BAEKAAIALAAAAAAQABAAAAIzlA2px6IBw2IpWglOvTahDgGdI0ZlGW5meKlci6JrasrqkypxJr8S0oNpgqkGLtcY6hoFADs=" + CRLF;
-            Headers += CRLF + base64File + CRLF;
+            Headers += CRLF + base64File + CRLF; //the body of each part also starts and ends with CRLF
         }
-        Headers += CRLF +"--outerboundary--" + CRLF;
+
+        Headers += CRLF +"--outerboundary--" + CRLF; //signals end of a multipart body, syntax: --boundaryName--
 
 
 

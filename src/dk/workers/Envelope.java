@@ -49,8 +49,9 @@ public class Envelope {
         return;
     }
 
-    /* Escape the message by doubling all periods at the beginning of
-       a line. */
+    /* Escape the message by doubling all periods at the beginning of a line. */
+    //Kaloyan Penov: as this is part of the protocol
+    // we do not want the server reading the message to mistakenly think that we want to end the message.
     private Message escapeMessage(Message message) {
         String escapedBody = "";
         String token;
