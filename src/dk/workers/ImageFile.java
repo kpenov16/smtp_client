@@ -1,5 +1,6 @@
 package dk.workers;
 
+//Kaloyan Penov: just a helper class to model an image
 public class ImageFile {
     public String base64File = "";
     public String fileName = "";

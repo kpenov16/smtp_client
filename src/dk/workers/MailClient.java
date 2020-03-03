@@ -12,7 +12,7 @@ import java.util.Base64;
 /**
  * A simple mail client with a GUI for sending mail.
  *
- * @author Jussi Kangasharju, modified by Kaloyan Penov
+ * @author Jussi Kangasharju, modified by Kaloyan Penov s133967
  */
 public class MailClient extends Frame {
     /* The stuff for the GUI. */

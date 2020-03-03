@@ -8,7 +8,7 @@ import java.text.*;
 /**
  * Mail message.
  *
- * @author Jussi Kangasharju
+ * @author Jussi Kangasharju, modified by Kaloyan Penov s133967
  */
 public class Message {
     /* The headers and the body of the message. */
@@ -28,10 +28,10 @@ public class Message {
     public Message(String from, String to, String subject, String text, List<ImageFile> imageFiles) {
         /* Remove whitespace */
         From = from.trim();
-        To = to.trim();
-        Headers = "From: " + From + CRLF;
-        Headers += "To: " + To + CRLF;
-        Headers += "Subject: " + subject.trim() + CRLF;
+        To = to.trim();                    //Kaloyan Penov
+        Headers = "From: " + From + CRLF;  //add sender header
+        Headers += "To: " + To + CRLF;     //add receiver header
+        Headers += "Subject: " + subject.trim() + CRLF; //add subject header
 
 	/* A close approximation of the required format. Unfortunately
 	   only GMT. */
@@ -66,9 +66,9 @@ public class Message {
             //Headers += "Content-Disposition: inline" + CRLF;
             Headers += "Content-Disposition: attachment; filename=\""+imageFile.fileName+"\"" + CRLF; //the disposition of the following body part
             Headers += "Content-Transfer-Encoding: base64" + CRLF; //decoding to be used on the receiver side
-            Headers += "Content-ID: dont@care-for-now.com" + CRLF;
+            Headers += "Content-ID: dont@care-for-now.com" + CRLF; //not used in the current work
             //Headers += CRLF + "R0lGODlhEAAQAKEBAAAAAP//AP//AP//ACH5BAEKAAIALAAAAAAQABAAAAIzlA2px6IBw2IpWglOvTahDgGdI0ZlGW5meKlci6JrasrqkypxJr8S0oNpgqkGLtcY6hoFADs=" + CRLF;
-            Headers += CRLF + imageFile.base64File + CRLF; //the body of each part also starts and ends with CRLF
+            Headers += CRLF + imageFile.base64File + CRLF; //the body of each data part also starts and ends with CRLF
         }
 
         Headers += CRLF +"--outerboundary--" + CRLF; //signals end of a multipart body, syntax: --boundaryName--
@@ -76,7 +76,8 @@ public class Message {
         //Kaloyan Penov: goodies used from here: https://stackoverflow.com/questions/30351465/html-email-with-inline-attachments-and-non-inline-attachments
         //                                       https://stackoverflow.com/questions/10631856/mime-type-to-satisfy-html-email-images-and-plain-text
 
-        Body = ""; //not used for now
+        Body = ""; //not used anymore as multipart format can have nested part with data bodies, I just use the Headers variable to build all the parts in it
+                   //if there are no attachments the only par will be that text/plain content type part
     }
 
     /* Two functions to access the sender and recipient. */

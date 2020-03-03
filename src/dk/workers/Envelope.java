@@ -9,7 +9,7 @@ import java.util.*;
 /**
  * SMTP envelope for one mail message.
  *
- * @author Jussi Kangasharju
+ * @author Jussi Kangasharju, Modified by Kaloyan Penov s133967
  */
 public class Envelope {
     /* SMTP-sender of the message (in this case, contents of From-header. */

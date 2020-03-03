@@ -6,6 +6,7 @@ import java.util.*;
 
 /**
  * Open an SMTP connection to a mailserver and send one mail.
+ * Modified by Kaloyan Penov s133967
  *
  */
 public class SMTPConnection {
@@ -16,8 +17,8 @@ public class SMTPConnection {
     private BufferedReader fromServer;
     private DataOutputStream toServer;
 
-    private static final int SMTP_PORT = 25;
-    private static final String CRLF = "\r\n";
+    private static final int SMTP_PORT = 25;   //Kaloyan Penov: mstp port assigned for the service by the rfc 281
+    private static final String CRLF = "\r\n"; //mainly used to indicate end command line
 
     /* Are we connected? Used in close() to determine what to do. */
     private boolean isConnected = false;
@@ -25,9 +26,10 @@ public class SMTPConnection {
     /* Create an SMTPConnection object. Create the socket and the
        associated streams. Initialize SMTP connection. */
     public SMTPConnection(Envelope envelope) throws IOException {
+        //Kaloyan Penov: pdf file "Java SocketProgramming (Server programmingClient side programmingImplementation)" by Bhupjit Singh and S.Ali Ghodrat
         connection = new Socket("localhost",25);
-        fromServer =  new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        toServer = new DataOutputStream(connection.getOutputStream());
+        fromServer =  new BufferedReader(new InputStreamReader(connection.getInputStream())); //to read what the smtp server is sending
+        toServer = new DataOutputStream(connection.getOutputStream()); //to send data to the smtp server
 
    	/* Read a line from server and check that the reply code is 220.
 	   If not, throw an IOException. */
@@ -39,11 +41,11 @@ public class SMTPConnection {
 	/* SMTP handshake. We need the name of the local machine.
 	   Send the appropriate SMTP handshake command. */
         String localhost = "localhost";
-        sendCommand( "HELO laster.dk", 250 );
-
+        sendCommand( "HELO dontcare.com", 250 ); //Kaloyan Penov: identify the sender-SMTP to the receiver-SMTP, rfc 821
         isConnected = true;
     }
 
+    //Kaloyan Penov: general method for sending commands and confirming the reply
     /* Send an SMTP command to the server. Check that the reply code is
       what is is supposed to be according to RFC 821. */
     private void sendCommand(String command, int rc) throws IOException {
@@ -57,7 +59,7 @@ public class SMTPConnection {
         /* Check that the server's reply code is the same as the parameter
          rc. If not, throw an IOException. */
         //if(!line.contains(Integer.toString(rc))) {
-        if( parseReply(line) != rc ) {
+        if( parseReply(line) != rc ) { //Kaloyan Penov: check if the given replay code is the same as the expected
             throw new IOException("response: \""+line+"\" do not contains the expected rc: " + rc +
                                   ", for command: " + command);
         }
@@ -69,11 +71,11 @@ public class SMTPConnection {
     public void send(Envelope envelope) throws IOException {
   	/* Send all the necessary commands to send a message. Call
 	   sendCommand() to do the dirty work. Do _not_ catch the
-	   exception thrown from sendCommand(). */
-        sendCommand("MAIL FROM: " + envelope.Sender, 250);  // from email
-        sendCommand("RCPT TO: " + envelope.Recipient, 250); // to email
-        sendCommand("DATA", 354);                           // command indicating that the data body is coming next
-        sendCommand(envelope.Message.toString() + CRLF + "." + CRLF, 250); // the body itself with end of message sequence
+	   exception thrown from sendCommand(). */                           //Kaloyan Penov: from rfc 821s
+        sendCommand("MAIL FROM: " + envelope.Sender, 250);  // send from email, expected replay code 250
+        sendCommand("RCPT TO: " + envelope.Recipient, 250); // send to email, expected replay code 250
+        sendCommand("DATA", 354);                           // send command indicating that the data body is coming next, expected replay code 345
+        sendCommand(envelope.Message.toString() + CRLF + "." + CRLF, 250); // send the body itself with end of message sequence, expected replay code 250
     }
 
     /* Close the connection. First, terminate on SMTP level, then
