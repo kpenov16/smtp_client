@@ -1,0 +1,6 @@
+Kaloyan Penov s133967, Assignment 1
+References:
+- rfc 1521, rfc 4648, rfc 2045, rfc 822, rfc 821
+- https://docs.oracle.com/javase/tutorial/uiswing/components/filechooser.html
+- https://docs.oracle.com/javase/8/docs/api/java/util/Base64.html
+- pdf file "Java SocketProgramming (Server programmingClient side programmingImplementation)" by Bhupjit Singh and S.Ali Ghodrat

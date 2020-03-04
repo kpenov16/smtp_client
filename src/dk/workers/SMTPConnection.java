@@ -52,8 +52,8 @@ public class SMTPConnection {
         /* Write command to server and read reply from server. */
         toServer.writeBytes(command + CRLF);
         String line = fromServer.readLine();
-        if(line == null) {
-            throw new IOException("line read is null for command: " + command + ", expected rc: " + rc);
+        if(line == null || line.isEmpty()) {
+            throw new IOException("line read is null or empty for command: " + command + ", expected rc: " + rc);
         }
 
         /* Check that the server's reply code is the same as the parameter
@@ -71,7 +71,7 @@ public class SMTPConnection {
     public void send(Envelope envelope) throws IOException {
   	/* Send all the necessary commands to send a message. Call
 	   sendCommand() to do the dirty work. Do _not_ catch the
-	   exception thrown from sendCommand(). */                           //Kaloyan Penov: from rfc 821s
+	   exception thrown from sendCommand(). */                           //Kaloyan Penov: from rfc 821
         sendCommand("MAIL FROM: " + envelope.Sender, 250);  // send from email, expected replay code 250
         sendCommand("RCPT TO: " + envelope.Recipient, 250); // send to email, expected replay code 250
         sendCommand("DATA", 354);                           // send command indicating that the data body is coming next, expected replay code 345
@@ -83,7 +83,7 @@ public class SMTPConnection {
     public void close() {
         isConnected = false;
         try {
-            sendCommand( "QUIT", 221);
+            sendCommand( "QUIT", 221); //Kaloyan Penov: from rfc 821
             connection.close();
         } catch (IOException e) {
             System.out.println("Unable to close connection: " + e);
@@ -96,7 +96,7 @@ public class SMTPConnection {
     /* Parse the reply line from the server. Returns the reply code. */
     private int parseReply(String reply) {
         try{
-            return Integer.parseInt(reply.split("\\s+")[0].trim());
+            return Integer.parseInt(reply.split("\\s+")[0].trim()); //Kaloyan Penov: extract the reply code
         }catch(Throwable t){
             return -1;
         }
