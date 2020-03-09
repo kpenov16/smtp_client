@@ -4,3 +4,5 @@ References:
 - https://docs.oracle.com/javase/tutorial/uiswing/components/filechooser.html
 - https://docs.oracle.com/javase/8/docs/api/java/util/Base64.html
 - pdf file "Java SocketProgramming (Server programmingClient side programmingImplementation)" by Bhupjit Singh and S.Ali Ghodrat
+- Computer Networking, A Top-Down Approach, seventh edition by J.F.Kurose and K.W.Ross
+- Slides and lectures by Bhupjit Singh in course 62577 Datakommunikation at DTU 2020

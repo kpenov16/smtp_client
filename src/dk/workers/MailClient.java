@@ -93,17 +93,17 @@ public class MailClient extends Frame {
     static public void main(String argv[]) {
         new MailClient();
     }
-    // Kaloyan Penov, adding on click listener to open the image file
+    // Kaloyan Penov: adding on click listener to open the image file
     // and convert it to base64 encoded string that the smtp protocol works with
     // when images are send via body parts in a mixed multipart content type
     // as described in rfc 1521
-    //Create a file chooser
+    //Create a file chooser so the user can choose a image file
     final JFileChooser fc = new JFileChooser();
-    /* Handler for the Add-button. */
+    /* Kaloyan Penov: Handler for the Add-button. */
     class AddListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            // modified source: https://docs.oracle.com/javase/tutorial/uiswing/components/filechooser.html
+            // Kaloyan Penov: modified source: https://docs.oracle.com/javase/tutorial/uiswing/components/filechooser.html
             //Handle open button action.
             if (e.getSource() == btAdd) {
                 int returnVal = fc.showOpenDialog(MailClient.this);
@@ -135,7 +135,7 @@ public class MailClient extends Frame {
         }
     }
 
-    //one thread at a time can access it
+    //Kaloyan Penov: one thread at a time can access it
     public synchronized void attachFile(String base64File, String filename){
         imageFiles.add( new ImageFile(base64File, filename) );
     }
@@ -169,7 +169,7 @@ public class MailClient extends Frame {
                     toField.getText(),
                     subjectField.getText(),
                     messageText.getText(),
-                    imageFiles);//passing the image files to the message itself
+                    imageFiles);//Kaloyan Penov: passing the image files to the message itself
 
 	    /* Check that the message is valid, i.e., sender and
 	       recipient addresses look ok. */
@@ -207,7 +207,7 @@ public class MailClient extends Frame {
             toField.setText("");
             subjectField.setText("");
             messageText.setText("");
-            setupBase64Files(); //remove the attachments
+            setupBase64Files(); //Kaloyan Penov: remove the attachments
         }
     }
 

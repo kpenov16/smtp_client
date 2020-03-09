@@ -27,14 +27,14 @@ public class SMTPConnection {
        associated streams. Initialize SMTP connection. */
     public SMTPConnection(Envelope envelope) throws IOException {
         //Kaloyan Penov: pdf file "Java SocketProgramming (Server programmingClient side programmingImplementation)" by Bhupjit Singh and S.Ali Ghodrat
-        connection = new Socket("localhost",25);
+        connection = new Socket("localhost",25); //Kaloyan Penov: the hostname is localhost as we run the program on the machine where the mail server is located
         fromServer =  new BufferedReader(new InputStreamReader(connection.getInputStream())); //to read what the smtp server is sending
         toServer = new DataOutputStream(connection.getOutputStream()); //to send data to the smtp server
 
    	/* Read a line from server and check that the reply code is 220.
 	   If not, throw an IOException. */
         String firstLine = fromServer.readLine();
-        if(firstLine == null || !firstLine.contains("220")) {
+        if(firstLine == null || !firstLine.contains("220")) { //Kaloyan Penov: check if server is ready to communicate, rfc 821
             throw new IOException("first line contains no 220");
         }
 
@@ -97,6 +97,7 @@ public class SMTPConnection {
     private int parseReply(String reply) {
         try{
             return Integer.parseInt(reply.split("\\s+")[0].trim()); //Kaloyan Penov: extract the reply code
+                                                                           // the protocol from rfc 821 the code is the first string followed by space
         }catch(Throwable t){
             return -1;
         }
